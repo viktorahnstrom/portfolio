@@ -5,9 +5,9 @@ export default function Hero() {
   return (
     <section className="min-h-screen flex flex-col relative overflow-hidden">
       <div className="bg-neutral-gray grain flex-grow pt-32 sm:pt-36 md:pt-0">
-        <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-16 max-w-8xl h-full">
+        <div className="mx-auto px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 max-w-8xl h-full">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
-            <div className="flex flex-col justify-center md:pt-32 md:w-2/3 -ml-1 md:-ml-2">
+            <div className="flex flex-col justify-center md:pt-32 w-full">
               <h1 className="text-[3rem] sm:text-[4rem] md:text-[6rem] lg:text-[9rem] xl:text-[12rem] 2xl:text-[14rem] leading-[0.85] tracking-tight stylized-name animate-fade-slide-up">
                 <span>{heroContent.firstName}</span>
                 <span>{heroContent.lastName}</span>
@@ -33,9 +33,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Profile picture - centered */}
-      <div className="absolute bottom-16 sm:bottom-20 md:bottom-48 inset-x-0 flex justify-center z-10 animate-fade-in animation-delay-400">
-        <div className="relative w-40 h-52 sm:w-48 sm:h-60 md:w-64 md:h-80 animate-slide-up">
+      {/* Profile picture - centered, larger */}
+      <div className="absolute bottom-12 sm:bottom-16 md:bottom-40 inset-x-0 flex justify-center z-10 animate-fade-in animation-delay-400">
+        <div className="relative w-48 h-64 sm:w-56 sm:h-72 md:w-72 md:h-96 animate-slide-up">
           <Image
             src="/profilepicture.svg"
             alt="Profile photo"
@@ -46,7 +46,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="bg-neutral-white h-16 sm:h-20 md:h-48"></div>
+      <div className="bg-neutral-white h-12 sm:h-16 md:h-40"></div>
     </section>
   );
 }
