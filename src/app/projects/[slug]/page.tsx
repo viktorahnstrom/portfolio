@@ -2,14 +2,13 @@ import { supabase } from "@/lib/supabase";
 import { Project } from "@/types/project";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
+import ImageCarousel from "@/components/ui/ImageCarousel";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Helper function to safely get tags array
 function getTags(tags: string[] | string | null): string[] {
   if (Array.isArray(tags)) return tags;
   if (typeof tags === "string") {
@@ -21,6 +20,27 @@ function getTags(tags: string[] | string | null): string[] {
     }
   }
   return [];
+}
+
+function getImages(images: string[] | string | null, legacyImage: string | null): string[] {
+  let imageArray: string[] = [];
+  
+  if (Array.isArray(images)) {
+    imageArray = images;
+  } else if (typeof images === "string") {
+    try {
+      const parsed = JSON.parse(images);
+      if (Array.isArray(parsed)) imageArray = parsed;
+    } catch {
+      if (images) imageArray = [images];
+    }
+  }
+  
+  if (imageArray.length === 0 && legacyImage) {
+    imageArray = [legacyImage];
+  }
+  
+  return imageArray.filter(Boolean);
 }
 
 async function getProject(slug: string): Promise<Project | null> {
@@ -61,41 +81,52 @@ export default async function ProjectPage({ params }: PageProps) {
   }
 
   const tags = getTags(project.tags);
+  const images = getImages(project.images, project.image_url);
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-neutral-gray">
-        {/* Header */}
-        <div className="bg-neutral-white pt-32 md:pt-36">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-8">
-            <Link
-              href="/#projects"
-              className="inline-flex items-center gap-2 text-neutral-black/60 hover:text-primary-orange transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back to projects
-            </Link>
-          </div>
-        </div>
-
+      <main className="min-h-screen bg-neutral-white">
         {/* Hero Section */}
-        <div className="bg-neutral-white pb-16 md:pb-24">
+        <div className="bg-neutral-white pt-24 sm:pt-28 pb-8 md:pb-12">
           <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+            {/* Back Link & Status */}
+            <div className="flex items-center justify-between mb-6">
+              <Link
+                href="/#projects"
+                className="inline-flex items-center gap-2 text-neutral-black/60 hover:text-primary-orange transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                Back to projects
+              </Link>
+
+              {project.status === 'wip' ? (
+                <span className="inline-flex items-center gap-1.5 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
+                  Work in Progress
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  Completed
+                </span>
+              )}
+            </div>
+
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex flex-wrap gap-2 mb-4">
               {tags.map((tag) => (
                 <span
                   key={tag}
@@ -107,7 +138,7 @@ export default async function ProjectPage({ params }: PageProps) {
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-light italic tracking-tight text-neutral-darkgray mb-6">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-light italic tracking-tight text-neutral-darkgray mb-4">
               {project.title}
             </h1>
 
@@ -117,7 +148,7 @@ export default async function ProjectPage({ params }: PageProps) {
             </p>
 
             {/* Links */}
-            <div className="flex gap-4 mt-8">
+            <div className="flex gap-4 mt-6">
               {project.live_url && (
                 <a
                   href={project.live_url}
@@ -162,60 +193,29 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Project Image */}
-        {project.image_url && (
-          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-12">
-            <div className="relative aspect-video rounded-lg overflow-hidden shadow-2xl">
-              <Image
-                src={project.image_url}
-                alt={project.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        )}
+        {/* Content Section with Topography Background */}
+        <div className="pattern-topography py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 space-y-8">
+            {/* Image Carousel - No white background */}
+            {images.length > 0 && (
+              <ImageCarousel images={images} title={project.title} />
+            )}
 
-        {/* Long Description */}
-        {project.long_description && (
-          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
-            <div className="bg-neutral-white p-8 md:p-12 lg:p-16 rounded-lg">
-              <h2 className="text-3xl md:text-4xl font-light italic tracking-tight text-neutral-darkgray mb-8">
-                About this project
-              </h2>
-              <div className="prose prose-lg max-w-none text-neutral-black/70">
-                {project.long_description.split("\n").map((paragraph, index) => (
-                  <p key={index} className="mb-4">
-                    {paragraph}
-                  </p>
-                ))}
+            {/* Long Description */}
+            {project.long_description && (
+              <div className="bg-neutral-white p-8 md:p-12 lg:p-16 rounded-lg">
+                <h2 className="text-3xl md:text-4xl font-light italic tracking-tight text-neutral-darkgray mb-6">
+                  About this project
+                </h2>
+                <div className="prose prose-lg max-w-none text-neutral-black/70">
+                  {project.long_description.split("\n").map((paragraph, index) => (
+                    <p key={index} className="mb-4 last:mb-0">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Footer Navigation */}
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
-          <div className="flex justify-center">
-            <Link
-              href="/#projects"
-              className="inline-flex items-center gap-2 text-primary-orange hover:underline text-lg"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              View all projects
-            </Link>
+            )}
           </div>
         </div>
       </main>
