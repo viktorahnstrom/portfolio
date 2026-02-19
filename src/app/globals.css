@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../styles/patterns.css";
 
 @theme inline {
   --color-primary-orange: #F9541D;
@@ -7,15 +8,136 @@
   --color-neutral-white: #FFFFFF;
   --color-neutral-brown: #20B2AA;
   --color-neutral-black: #000000;
+  --color-neutral-darkgray: #323232;
   
   --font-sans: var(--font-inter);
   
-  --text-display-mobile: 3.5rem;
-  --text-display-desktop: 8rem;
+  --text-display-mobile: 4.5rem;
+  --text-display-desktop: 14rem;
 }
 
 body {
   background-color: var(--color-neutral-gray);
   font-family: var(--font-sans);
   color: var(--color-neutral-black);
+}
+
+/* Grain overlay effect */
+.grain {
+  position: relative;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Stylized name effect */
+.stylized-name {
+  background: linear-gradient(180deg, #323232 0%, #505050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stylized-name span {
+  display: block;
+}
+
+.stylized-name span:first-child {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+.stylized-name span:last-child {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Hero entrance animations */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-slide-down {
+  animation: fadeSlideDown 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }
+.animation-delay-600 { animation-delay: 0.6s; }
+
+/* Scroll animations */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-animate.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-animate-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.scroll-animate-scale.in-view {
+  opacity: 1;
+  transform: scale(1);
 }

@@ -3,46 +3,48 @@ import { heroContent } from "@/data/content";
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col">
-      {/* Gray Section - Top */}
-      <div className="bg-neutral-gray flex-grow pt-44 md:pt-0">
-        <div className="mx-auto px-6 md:px-12 lg:px-24 max-w-7xl">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            {/* Text Content */}
-            <div className="flex flex-col justify-center md:pt-32 md:w-1/2">
-              {/* Name */}
-              <h1 className="text-5xl md:text-display-desktop font-medium tracking-tight whitespace-pre-line leading-none">
-                {heroContent.name}
+    <section className="min-h-screen flex flex-col relative overflow-hidden">
+      <div className="bg-neutral-gray grain flex-grow pt-44 md:pt-0">
+        <div className="mx-auto px-4 md:px-8 lg:px-16 max-w-8xl h-full">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
+            <div className="flex flex-col justify-center md:pt-32 md:w-2/3 -ml-1 md:-ml-2">
+              <h1 className="text-display-mobile md:text-display-desktop leading-[0.85] tracking-tight stylized-name animate-fade-slide-up">
+                <span>{heroContent.firstName}</span>
+                <span>{heroContent.lastName}</span>
               </h1>
 
-              {/* Title and Description */}
-              <div className="mt-8 md:mt-12 max-w-xs">
-                <h2 className="text-xl md:text-2xl font-bold">
+              <div className="mt-6 md:mt-10 max-w-xs">
+                <h2 className="text-xl md:text-2xl font-bold animate-fade-slide-up animation-delay-200">
                   {heroContent.title}
                 </h2>
-                <p className="mt-4 text-sm md:text-base text-neutral-black/70 leading-relaxed">
-                  {heroContent.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Profile Image - Positioned to overlap gray/white */}
-            <div className="flex justify-center md:justify-end md:w-1/2 mt-12 md:mt-0 md:self-end">
-              <div className="relative w-48 h-60 md:w-80 md:h-[400px] translate-y-16 md:translate-y-24">
-                <Image
-                  src={heroContent.image}
-                  alt="Profile photo"
-                  fill
-                  className="object-cover object-top grayscale"
-                  priority
-                />
+                <ul className="mt-4 space-y-1">
+                  {heroContent.details.map((detail, index) => (
+                    <li
+                      key={index}
+                      className={`text-sm md:text-base text-primary-orange font-medium animate-fade-slide-up animation-delay-${(index + 3) * 100}`}
+                    >
+                      &rarr; {detail}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* White Section - Bottom */}
+      <div className="absolute bottom-22 md:bottom-48 left-1/2 -translate-x-1/2 z-10 animate-fade-slide-down animation-delay-400">
+        <div className="relative w-48 h-60 md:w-64 md:h-80">
+          <Image
+            src="/profilepicture.svg"
+            alt="Profile photo"
+            fill
+            className="object-cover object-top"
+            priority
+          />
+        </div>
+      </div>
+
       <div className="bg-neutral-white h-22 md:h-48"></div>
     </section>
   );
