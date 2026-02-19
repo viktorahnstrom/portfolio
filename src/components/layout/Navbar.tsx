@@ -23,61 +23,39 @@ export default function Navbar() {
           </a>
         </div>
 
-        <div className="hidden md:flex items-start">
-          <ul className="flex items-center gap-8 p-6">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="text-neutral-black hover:text-primary-orange transition-colors"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <a
-            href="#contact"
-            className="bg-primary-orange text-neutral-white px-8 py-6 h-24 flex items-center justify-center hover:opacity-90 transition-opacity"
-          >
-            contact me
-          </a>
-        </div>
-
-        {/* Mobile Menu Button + Dropdown Container */}
-        <div className="md:hidden relative">
+        {/* Hamburger Menu - always visible */}
+        <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="bg-primary-orange w-20 h-20 flex flex-col items-center justify-center gap-1.5"
             aria-label="Toggle menu"
           >
             <span
-              className={`block w-8 h-0.5 bg-neutral-black transition-transform ${
+              className={`block w-8 h-0.5 bg-neutral-black transition-all duration-300 ${
                 isOpen ? "rotate-45 translate-y-2" : ""
               }`}
             />
             <span
-              className={`block w-8 h-0.5 bg-neutral-black transition-opacity ${
+              className={`block w-8 h-0.5 bg-neutral-black transition-all duration-300 ${
                 isOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block w-8 h-0.5 bg-neutral-black transition-transform ${
+              className={`block w-8 h-0.5 bg-neutral-black transition-all duration-300 ${
                 isOpen ? "-rotate-45 -translate-y-2" : ""
               }`}
             />
           </button>
 
-          {/* Mobile Menu Dropdown */}
+          {/* Dropdown Menu */}
           {isOpen && (
-            <div className="absolute top-20 right-0 bg-primary-orange min-w-48">
+            <div className="absolute top-20 right-0 bg-primary-orange min-w-56">
               <ul className="flex flex-col p-6 gap-4">
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className="text-neutral-black text-xl font-medium"
+                      className="text-neutral-black text-xl font-medium hover:opacity-70 transition-opacity"
                       onClick={() => setIsOpen(false)}
                     >
                       {link.label}
@@ -87,7 +65,7 @@ export default function Navbar() {
                 <li>
                   <a
                     href="#contact"
-                    className="text-neutral-black text-xl font-medium"
+                    className="text-neutral-black text-xl font-medium hover:opacity-70 transition-opacity"
                     onClick={() => setIsOpen(false)}
                   >
                     contact me
