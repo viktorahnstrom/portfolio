@@ -10,8 +10,8 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
       <div className="flex justify-between items-start">
-        {/* Logo */}
-        <div className="p-6">
+        {/* Logo with grain background */}
+        <div className="bg-neutral-gray grain p-6">
           <Link href="/">
             <Image
               src="/logo.svg"
