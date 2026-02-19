@@ -1,7 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { navLinks } from "@/data/content";
 
 export default function Navbar() {
@@ -12,7 +12,7 @@ export default function Navbar() {
       <div className="flex justify-between items-start">
         {/* Logo */}
         <div className="p-6">
-          <a href="#">
+          <Link href="/">
             <Image
               src="/logo.svg"
               alt="VA Logo"
@@ -20,56 +20,56 @@ export default function Navbar() {
               height={50}
               priority
             />
-          </a>
+          </Link>
         </div>
 
-        {/* Hamburger Menu - always visible */}
+        {/* Hamburger Menu */}
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-primary-orange w-20 h-20 flex flex-col items-center justify-center gap-1.5"
+            className="bg-primary-orange w-24 h-24 sm:w-28 sm:h-28 flex flex-col items-center justify-center gap-2"
             aria-label="Toggle menu"
           >
             <span
-              className={`block w-8 h-0.5 bg-neutral-black transition-all duration-300 ${
-                isOpen ? "rotate-45 translate-y-2" : ""
+              className={`block w-9 h-0.5 bg-neutral-black transition-all duration-300 ${
+                isOpen ? "rotate-45 translate-y-2.5" : ""
               }`}
             />
             <span
-              className={`block w-8 h-0.5 bg-neutral-black transition-all duration-300 ${
+              className={`block w-9 h-0.5 bg-neutral-black transition-all duration-300 ${
                 isOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block w-8 h-0.5 bg-neutral-black transition-all duration-300 ${
-                isOpen ? "-rotate-45 -translate-y-2" : ""
+              className={`block w-9 h-0.5 bg-neutral-black transition-all duration-300 ${
+                isOpen ? "-rotate-45 -translate-y-2.5" : ""
               }`}
             />
           </button>
 
           {/* Dropdown Menu */}
           {isOpen && (
-            <div className="absolute top-20 right-0 bg-primary-orange min-w-56">
+            <div className="absolute top-24 sm:top-28 right-0 bg-primary-orange min-w-56">
               <ul className="flex flex-col p-6 gap-4">
                 {navLinks.map((link) => (
                   <li key={link.href}>
-                    <a
-                      href={link.href}
+                    <Link
+                      href={`/${link.href}`}
                       className="text-neutral-black text-xl font-medium hover:opacity-70 transition-opacity"
                       onClick={() => setIsOpen(false)}
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
                 <li>
-                  <a
-                    href="#contact"
+                  <Link
+                    href="/#contact"
                     className="text-neutral-black text-xl font-medium hover:opacity-70 transition-opacity"
                     onClick={() => setIsOpen(false)}
                   >
                     contact me
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
