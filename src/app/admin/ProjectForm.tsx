@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { uploadProjectImage } from "@/lib/storage";
+import { uploadProjectMedia, isVideoUrl } from "@/lib/storage";
 import { Project } from "@/types/project";
 import Image from "next/image";
 
@@ -12,7 +12,6 @@ interface ProjectFormProps {
   onCancel: () => void;
 }
 
-// Helper function to safely get tags as string
 function getTagsString(tags: string[] | string | null): string {
   if (Array.isArray(tags)) return tags.join(", ");
   if (typeof tags === "string") {
@@ -26,7 +25,6 @@ function getTagsString(tags: string[] | string | null): string {
   return "";
 }
 
-// Helper function to safely get images array
 function getImagesArray(images: string[] | string | null): string[] {
   if (Array.isArray(images)) return images;
   if (typeof images === "string") {
@@ -73,13 +71,12 @@ export default function ProjectForm({
     }));
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    // Check max images limit
     if (images.length + files.length > 10) {
-      setError("Maximum 10 images allowed");
+      setError("Maximum 10 files allowed");
       return;
     }
 
@@ -87,15 +84,21 @@ export default function ProjectForm({
     setError("");
 
     const uploadPromises = Array.from(files).map(async (file) => {
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
+      // Validate file type (images and videos)
+      const isImage = file.type.startsWith("image/");
+      const isVideo = file.type.startsWith("video/");
+      
+      if (!isImage && !isVideo) {
         return null;
       }
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      
+      // Validate file size (5MB for images, 50MB for videos)
+      const maxSize = isVideo ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
+      if (file.size > maxSize) {
         return null;
       }
-      return uploadProjectImage(file);
+      
+      return uploadProjectMedia(file);
     });
 
     const results = await Promise.all(uploadPromises);
@@ -106,19 +109,18 @@ export default function ProjectForm({
     }
 
     if (successfulUploads.length < files.length) {
-      setError(`${files.length - successfulUploads.length} image(s) failed to upload`);
+      setError(`${files.length - successfulUploads.length} file(s) failed to upload`);
     }
 
     setUploading(false);
-    // Reset input
     e.target.value = "";
   };
 
-  const handleRemoveImage = (index: number) => {
+  const handleRemoveMedia = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleReorderImage = (index: number, direction: "up" | "down") => {
+  const handleReorderMedia = (index: number, direction: "up" | "down") => {
     setImages((prev) => {
       const newImages = [...prev];
       const newIndex = direction === "up" ? index - 1 : index + 1;
@@ -143,7 +145,7 @@ export default function ProjectForm({
         .map((t) => t.trim())
         .filter(Boolean),
       images: images,
-      image_url: images[0] || null, // Keep legacy field updated
+      image_url: images[0] || null,
       github_url: formData.github_url || null,
       live_url: formData.live_url || null,
       order: Number(formData.order),
@@ -263,24 +265,42 @@ export default function ProjectForm({
           />
         </div>
 
-        {/* Multiple Image Upload Section */}
+        {/* Media Upload Section (Images & Videos) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Project Images ({images.length}/10)
+            Project Media ({images.length}/10) - Images & Videos
           </label>
 
-          {/* Current Images */}
+          {/* Current Media */}
           {images.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
-              {images.map((img, index) => (
+              {images.map((media, index) => (
                 <div key={index} className="relative group">
-                  <div className="relative aspect-video rounded-lg overflow-hidden border border-gray-200">
-                    <Image
-                      src={img}
-                      alt={`Project image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+                    {isVideoUrl(media) ? (
+                      <>
+                        <video
+                          src={media}
+                          className="w-full h-full object-cover"
+                          muted
+                        />
+                        {/* Video indicator */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center">
+                            <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <Image
+                        src={media}
+                        alt={`Project media ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                     {index === 0 && (
                       <span className="absolute top-1 left-1 bg-primary-orange text-white text-xs px-2 py-0.5 rounded">
                         Cover
@@ -292,7 +312,7 @@ export default function ProjectForm({
                     {index > 0 && (
                       <button
                         type="button"
-                        onClick={() => handleReorderImage(index, "up")}
+                        onClick={() => handleReorderMedia(index, "up")}
                         className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100"
                         title="Move left"
                       >
@@ -301,7 +321,7 @@ export default function ProjectForm({
                     )}
                     <button
                       type="button"
-                      onClick={() => handleRemoveImage(index)}
+                      onClick={() => handleRemoveMedia(index)}
                       className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600"
                       title="Remove"
                     >
@@ -310,7 +330,7 @@ export default function ProjectForm({
                     {index < images.length - 1 && (
                       <button
                         type="button"
-                        onClick={() => handleReorderImage(index, "down")}
+                        onClick={() => handleReorderMedia(index, "down")}
                         className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100"
                         title="Move right"
                       >
@@ -341,18 +361,19 @@ export default function ProjectForm({
                   </svg>
                   <label className="mt-3 block">
                     <span className="text-primary-orange hover:underline cursor-pointer font-medium">
-                      Upload images
+                      Upload images or videos
                     </span>
-                    <span className="text-gray-500"> or drag and drop</span>
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/*,video/*"
                       multiple
-                      onChange={handleImageUpload}
+                      onChange={handleMediaUpload}
                       className="hidden"
                     />
                   </label>
-                  <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 5MB each</p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Images: PNG, JPG, GIF up to 5MB | Videos: MP4, WebM up to 50MB
+                  </p>
                 </>
               )}
             </div>

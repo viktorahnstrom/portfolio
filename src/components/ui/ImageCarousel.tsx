@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
+import { isVideoUrl } from "@/lib/storage";
 
 interface ImageCarouselProps {
   images: string[];
@@ -41,6 +42,9 @@ function Lightbox({
       document.body.style.overflow = "unset";
     };
   }, [onClose, onPrevious, onNext]);
+
+  const currentMedia = images[currentIndex];
+  const isVideo = isVideoUrl(currentMedia);
 
   return (
     <div
@@ -83,7 +87,7 @@ function Lightbox({
         </svg>
       </button>
 
-      {/* Main Image */}
+      {/* Main Media */}
       <div
         style={{
           position: "absolute",
@@ -96,14 +100,23 @@ function Lightbox({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <Image
-          src={images[currentIndex]}
-          alt={`${title} - Image ${currentIndex + 1}`}
-          fill
-          className="object-contain"
-          sizes="100vw"
-          priority
-        />
+        {isVideo ? (
+          <video
+            src={currentMedia}
+            controls
+            autoPlay
+            className="w-full h-full object-contain"
+          />
+        ) : (
+          <Image
+            src={currentMedia}
+            alt={`${title} - Image ${currentIndex + 1}`}
+            fill
+            className="object-contain"
+            sizes="100vw"
+            priority
+          />
+        )}
       </div>
 
       {/* Previous Button */}
@@ -130,7 +143,7 @@ function Lightbox({
             border: "none",
             cursor: "pointer",
           }}
-          aria-label="Previous image"
+          aria-label="Previous"
         >
           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -162,7 +175,7 @@ function Lightbox({
             border: "none",
             cursor: "pointer",
           }}
-          aria-label="Next image"
+          aria-label="Next"
         >
           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -180,17 +193,15 @@ function Lightbox({
           zIndex: 10,
         }}
       >
-        {/* Counter */}
         {images.length > 1 && (
           <div style={{ textAlign: "center", color: "white", marginBottom: "0.75rem" }}>
             {currentIndex + 1} / {images.length}
           </div>
         )}
 
-        {/* Thumbnails */}
         {images.length > 1 && (
           <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", padding: "0 1rem" }}>
-            {images.map((img, index) => (
+            {images.map((media, index) => (
               <button
                 type="button"
                 key={index}
@@ -211,12 +222,20 @@ function Lightbox({
                   padding: 0,
                 }}
               >
-                <Image
-                  src={img}
-                  alt={`Thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
+                {isVideoUrl(media) ? (
+                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                ) : (
+                  <Image
+                    src={media}
+                    alt={`Thumbnail ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -249,34 +268,63 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
 
   if (!images || images.length === 0) return null;
 
+  const currentMedia = images[currentIndex];
+  const isVideo = isVideoUrl(currentMedia);
+
   return (
     <>
       {/* Carousel */}
       <div className="relative max-w-2xl mx-auto">
-        {/* Main Image - Clickable */}
+        {/* Main Media - Clickable */}
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
           className="relative aspect-video w-full rounded-lg overflow-hidden shadow-lg cursor-zoom-in block group"
         >
-          <Image
-            src={images[currentIndex]}
-            alt={`${title} - Image ${currentIndex + 1}`}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          
-          {/* Click to enlarge hint */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm bg-black/50 px-3 py-1 rounded-full flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-              Click to enlarge
-            </span>
-          </div>
+          {isVideo ? (
+            <>
+              <video
+                src={currentMedia}
+                className="w-full h-full object-cover"
+                muted
+                loop
+                playsInline
+                onMouseEnter={(e) => e.currentTarget.play()}
+                onMouseLeave={(e) => {
+                  e.currentTarget.pause();
+                  e.currentTarget.currentTime = 0;
+                }}
+              />
+              {/* Play icon overlay */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center group-hover:bg-black/70 transition-colors">
+                  <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <Image
+                src={currentMedia}
+                alt={`${title} - Image ${currentIndex + 1}`}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              {/* Click to enlarge hint */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm bg-black/50 px-3 py-1 rounded-full flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                  Click to enlarge
+                </span>
+              </div>
+            </>
+          )}
 
-          {/* Image Counter */}
+          {/* Media Counter */}
           {images.length > 1 && (
             <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
               {currentIndex + 1} / {images.length}
@@ -286,48 +334,54 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
 
         {/* Navigation Controls - Arrows + Dots in a row */}
         {images.length > 1 && (
-        <div className="flex items-center justify-center gap-4 mt-4">
+          <div className="flex items-center justify-center gap-4 mt-4">
             {/* Previous Arrow */}
             <button
-            type="button"
-            onClick={goToPrevious}
-            className="w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-60"
-            aria-label="Previous image"
+              type="button"
+              onClick={goToPrevious}
+              className="w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-60"
+              aria-label="Previous"
             >
-            <svg className="w-6 h-6 text-neutral-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-neutral-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-            </svg>
+              </svg>
             </button>
 
             {/* Dots */}
             <div className="flex items-center gap-3">
-            {images.map((_, index) => (
+              {images.map((media, index) => (
                 <button
-                type="button"
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                  type="button"
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-colors flex items-center justify-center ${
                     index === currentIndex
-                    ? "bg-primary-orange"
-                    : "bg-neutral-black/40 hover:bg-neutral-black/60"
-                }`}
-                aria-label={`Go to image ${index + 1}`}
-                />
-            ))}
+                      ? "bg-primary-orange"
+                      : "bg-neutral-black/40 hover:bg-neutral-black/60"
+                  }`}
+                  aria-label={`Go to ${isVideoUrl(media) ? 'video' : 'image'} ${index + 1}`}
+                >
+                  {isVideoUrl(media) && (
+                    <div className={`w-1.5 h-1.5 ${index === currentIndex ? 'border-l-2 border-white' : 'border-l-2 border-white/60'}`} 
+                      style={{ borderLeftWidth: '4px', borderTopWidth: '3px', borderBottomWidth: '3px', borderTopColor: 'transparent', borderBottomColor: 'transparent', marginLeft: '1px' }} 
+                    />
+                  )}
+                </button>
+              ))}
             </div>
 
             {/* Next Arrow */}
             <button
-            type="button"
-            onClick={goToNext}
-            className="w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-60"
-            aria-label="Next image"
+              type="button"
+              onClick={goToNext}
+              className="w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-60"
+              aria-label="Next"
             >
-            <svg className="w-6 h-6 text-neutral-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-neutral-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-            </svg>
+              </svg>
             </button>
-        </div>
+          </div>
         )}
       </div>
 
