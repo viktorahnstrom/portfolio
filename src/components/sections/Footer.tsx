@@ -1,11 +1,10 @@
-import Image from "next/image";
 import { footerContent, navLinks } from "@/data/content";
 
 export default function Footer() {
   return (
     <footer className="bg-[#1a1a1a] text-neutral-white py-16 md:py-24">
       <div className="mx-auto px-6 md:px-12 lg:px-24 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-center">
           {/* Left - Contact Info */}
           <div>
             <h3 className="text-sm tracking-[0.3em] text-neutral-white/60 mb-4">
@@ -21,16 +20,10 @@ export default function Footer() {
 
           {/* Middle - Navigation */}
           <nav className="flex flex-col gap-3">
-            <a
-              href="#"
-              className="text-primary-orange hover:text-primary-orange/80 transition-colors"
-            >
-              home
-            </a>
             {navLinks.map((link) => (
               <a
-                key={link.href}
-                href={link.href}
+                key={link.label}
+                href={`/${link.href}`}
                 className="text-primary-orange hover:text-primary-orange/80 transition-colors"
               >
                 {link.label}
@@ -38,16 +31,22 @@ export default function Footer() {
             ))}
           </nav>
 
-          {/* Right - Logo (same as navbar but bigger) */}
+          {/* Right - Logo */}
           <div className="flex justify-start md:justify-end">
-            <a href="#">
-              <Image
-                src="/logo.svg"
-                alt="VA Logo"
-                width={150}
-                height={150}
-                className="invert brightness-0 saturate-100"
-                style={{ filter: "invert(42%) sepia(93%) saturate(1352%) hue-rotate(347deg) brightness(101%) contrast(97%)" }}
+            <a href="/" aria-label="Home" className="block">
+              <span
+                aria-hidden="true"
+                className="block w-24 h-24 bg-primary-orange"
+                style={{
+                  WebkitMaskImage: "url(/logo.svg)",
+                  maskImage: "url(/logo.svg)",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskPosition: "center",
+                  maskPosition: "center",
+                }}
               />
             </a>
           </div>

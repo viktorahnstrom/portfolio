@@ -11,7 +11,8 @@
   --color-neutral-darkgray: #323232;
   
   --font-sans: var(--font-inter);
-  
+  --font-display: var(--font-instrument-serif);
+
   --text-display-mobile: 4.5rem;
   --text-display-desktop: 14rem;
 }
@@ -44,17 +45,56 @@ body {
 
 /* Stylized name effect */
 .stylized-name {
-  background: linear-gradient(180deg, #323232 0%, #505050 100%);
+  font-family: var(--font-display), serif;
+  background: linear-gradient(180deg, #1a1a1a 0%, #4a4a4a 60%, #2a2a2a 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  animation: gradientShift 8s ease-in-out infinite;
 }
 
 .stylized-name span {
   display: block;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  font-style: italic;
+}
+
+.stylized-name .letter {
+  display: inline-block;
+  padding: 0.08em 0.02em;
+  margin: -0.08em -0.02em;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.3s ease;
+  will-change: transform;
+}
+
+.stylized-name .letter:hover {
+  transform: translateY(-0.08em) rotate(-3deg);
+  color: var(--color-primary-orange);
+  -webkit-text-fill-color: var(--color-primary-orange);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Letter stagger entrance */
+@keyframes letterDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.stylized-name .letter {
+  animation: letterDrop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 
 
@@ -151,3 +191,4 @@ body {
   opacity: 1;
   transform: scale(1);
 }
+

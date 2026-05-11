@@ -1,6 +1,7 @@
 import { NavLink, HeroContent, AboutContent, ProjectsContent, ContactContent, FooterContent } from "@/types";
 
 export const navLinks: NavLink[] = [
+  { label: "home", href: "" },
   { label: "about", href: "#about" },
   { label: "projects", href: "#projects" },
 ];
@@ -20,9 +21,9 @@ export const heroContent: HeroContent = {
 export const aboutContent: AboutContent = {
   heading: "About",
   paragraphs: [
-    "I'm a computer engineer who loves building beautiful, functional digital experiences. My approach combines technical expertise with creative thinking to solve complex challenges.",
-    "I specialize in modern JavaScript frameworks, responsive design, and user experience optimization.",
-    "When I'm not coding and working, you can find me out with my friends enjoying a drink or in the outdoors hiking.",
+    "I'm a computer engineer based in Gothenburg who enjoys building software that's both technically solid and genuinely pleasant to use. I care about the craft: clean architecture, thoughtful details, and code that holds up over time.",
+    "I'm open to opportunities across software development, whether frontend, backend, mobile, or full-stack. I've worked across a range of languages and stacks, and I'm always happy to pick up something new if the problem is interesting. What matters most to me is working on something meaningful with people I can learn from.",
+    "When I'm not coding, you'll usually find me out with friends or somewhere in the outdoors hiking.",
   ],
   resumeText: "Download my resume",
   resumeUrl: "/resume.pdf",

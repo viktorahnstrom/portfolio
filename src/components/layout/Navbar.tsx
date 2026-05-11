@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/data/content";
 
@@ -8,21 +7,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
-      <div className="flex justify-between items-start">
-        {/* Logo with grain background */}
-        <div className="bg-neutral-gray grain p-6">
-          <Link href="/">
-            <Image
-              src="/logo.svg"
-              alt="VA Logo"
-              width={50}
-              height={50}
-              priority
-            />
-          </Link>
-        </div>
-
+    <nav className="fixed top-0 right-0 z-50">
+      <div className="flex justify-end items-start">
         {/* Hamburger Menu */}
         <div className="relative">
           <button
