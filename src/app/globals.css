@@ -11,7 +11,7 @@
   --color-neutral-darkgray: #323232;
   
   --font-sans: var(--font-inter);
-  --font-display: var(--font-dharma-gothic);
+  --font-display: 'DharmaGothic', sans-serif;
 
   --text-display-mobile: 4.5rem;
   --text-display-desktop: 14rem;
@@ -46,8 +46,8 @@ body {
 /* Dharma Gothic font face */
 @font-face {
   font-family: 'DharmaGothic';
-  src: url('../fonts/font/DharmaGothicE-HeavyItalic.woff2') format('woff2'),
-       url('../fonts/font/DharmaGothicE-HeavyItalic.woff') format('woff');
+  src: url('/fonts/DharmaGothicE-HeavyItalic.woff2') format('woff2'),
+       url('/fonts/DharmaGothicE-HeavyItalic.woff') format('woff');
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -55,12 +55,12 @@ body {
 
 /* Dharma Gothic heading font */
 .font-dharma {
-  font-family: 'DharmaGothic', var(--font-dharma-gothic), sans-serif;
+  font-family: 'DharmaGothic', sans-serif;
 }
 
 /* Stylized name effect */
 .stylized-name {
-  font-family: 'DharmaGothic', var(--font-dharma-gothic), sans-serif;
+  font-family: 'DharmaGothic', sans-serif;
   color: var(--color-primary-orange);
   text-shadow: 8px 10px 0px rgba(0, 0, 0, 0.85);
 }

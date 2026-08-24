@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
@@ -9,12 +8,6 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   weight: ["300", "400", "500", "600", "700"],
-});
-
-const dharmaGothic = localFont({
-  src: "../fonts/font/DharmaGothicE-HeavyItalic.woff2",
-  variable: "--font-dharma-gothic",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${dharmaGothic.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased`}>
         <SmoothScroll />
         <Navbar />
         <main>{children}</main>
