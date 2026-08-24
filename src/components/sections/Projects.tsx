@@ -111,7 +111,7 @@ export default function Projects() {
         className="mx-auto px-6 md:px-12 lg:px-24 max-w-7xl w-full relative"
       >
         <h2
-          className={`text-6xl md:text-8xl font-light italic tracking-tight mb-12 md:mb-16 scroll-animate transition-colors duration-500 ${
+          className={`text-7xl md:text-9xl font-light italic tracking-wide mb-12 md:mb-16 font-dharma scroll-animate transition-colors duration-500 ${
             isInView ? "in-view" : ""
           } ${activeColor ? "text-white" : "text-neutral-darkgray"}`}
         >

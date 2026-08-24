@@ -25,7 +25,7 @@ export default function About() {
           ref={cardRef}
           className={`bg-neutral-white p-10 md:p-16 lg:p-20 max-w-4xl scroll-animate ${cardInView ? "in-view" : ""}`}
         >
-          <h2 className="text-7xl md:text-9xl font-light italic tracking-tight">
+          <h2 className="text-8xl md:text-[10rem] font-light italic tracking-wide font-dharma">
             {aboutContent.heading}
           </h2>
 
