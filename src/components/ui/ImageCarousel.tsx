@@ -5,6 +5,47 @@ import Image from "next/image";
 import { createPortal } from "react-dom";
 import { isVideoUrl } from "@/lib/storage";
 
+type Orientation = "landscape" | "portrait" | "unknown";
+
+function useImageOrientations(images: string[]) {
+  const [orientations, setOrientations] = useState<Record<string, Orientation>>({});
+
+  useEffect(() => {
+    const results: Record<string, Orientation> = {};
+    let cancelled = false;
+
+    const checks = images
+      .filter((url) => !isVideoUrl(url))
+      .map(
+        (url) =>
+          new Promise<void>((resolve) => {
+            const img = new window.Image();
+            img.onload = () => {
+              if (!cancelled) {
+                results[url] = img.naturalHeight > img.naturalWidth ? "portrait" : "landscape";
+              }
+              resolve();
+            };
+            img.onerror = () => {
+              results[url] = "unknown";
+              resolve();
+            };
+            img.src = url;
+          })
+      );
+
+    Promise.all(checks).then(() => {
+      if (!cancelled) setOrientations(results);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [images]);
+
+  return orientations;
+}
+
 interface ImageCarouselProps {
   images: string[];
   title: string;
@@ -266,20 +307,26 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
     setCurrentIndex(index);
   };
 
+  const orientations = useImageOrientations(images);
+
   if (!images || images.length === 0) return null;
 
   const currentMedia = images[currentIndex];
   const isVideo = isVideoUrl(currentMedia);
+  const currentOrientation = isVideo ? "landscape" : (orientations[currentMedia] || "unknown");
+  const isPortrait = currentOrientation === "portrait";
 
   return (
     <>
       {/* Carousel */}
-      <div className="relative max-w-2xl mx-auto">
+      <div className={`relative mx-auto ${isPortrait ? "max-w-sm" : "max-w-2xl"}`}>
         {/* Main Media - Clickable */}
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
-          className="relative aspect-video w-full rounded-lg overflow-hidden shadow-lg cursor-zoom-in block group"
+          className={`relative w-full rounded-lg overflow-hidden shadow-lg cursor-zoom-in block group ${
+            isPortrait ? "aspect-[9/16]" : "aspect-video"
+          }`}
         >
           {isVideo ? (
             <>

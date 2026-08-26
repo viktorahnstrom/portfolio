@@ -58,6 +58,20 @@ body {
   font-family: 'DharmaGothic', sans-serif;
 }
 
+/* Dharma Gothic Regular Italic font face */
+@font-face {
+  font-family: 'DharmaGothicRegular';
+  src: url('/fonts/DharmaGothicE-RegularItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Lighter variant for section headings */
+.font-dharma-light {
+  font-family: 'DharmaGothicRegular', 'DharmaGothic', sans-serif;
+}
+
 /* Stylized name effect */
 .stylized-name {
   font-family: 'DharmaGothic', sans-serif;

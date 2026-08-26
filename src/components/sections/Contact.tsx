@@ -27,7 +27,7 @@ export default function Contact() {
           className={`bg-neutral-white p-10 md:p-16 lg:p-20 max-w-4xl mx-auto scroll-animate ${cardInView ? "in-view" : ""}`}
         >
           {/* Heading */}
-          <h2 className="text-6xl md:text-8xl font-light italic tracking-wide text-center mb-4 font-dharma">
+          <h2 className="text-6xl md:text-8xl italic tracking-wide text-center mb-4 font-dharma-light">
             {contactContent.heading}
           </h2>
 

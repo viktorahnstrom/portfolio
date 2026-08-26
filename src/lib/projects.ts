@@ -30,6 +30,21 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   return data || [];
 }
 
+export async function getNonFeaturedProjects(): Promise<Project[]> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('featured', false)
+    .order('order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching non-featured projects:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   const { data, error } = await supabase
     .from('projects')

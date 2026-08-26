@@ -12,8 +12,8 @@ export const heroContent: HeroContent = {
   lastName: "AHNSTRÖM",
   title: "Software Engineer",
   details: [
-    "Gothenburg",
-    "Available for opportunities",
+    "Based in Gothenburg",
+    "Open to opportunities",
   ],
   image: "/profilepicture.svg",
 };
@@ -21,9 +21,9 @@ export const heroContent: HeroContent = {
 export const aboutContent: AboutContent = {
   heading: "About",
   paragraphs: [
-    "I'm a computer engineer based in Gothenburg who enjoys building software that's both technically solid and genuinely pleasant to use. I care about the craft: clean architecture, thoughtful details, and code that holds up over time.",
-    "I'm open to opportunities across software development, whether frontend, backend, mobile, or full-stack. I've worked across a range of languages and stacks, and I'm always happy to pick up something new if the problem is interesting. What matters most to me is working on something meaningful with people I can learn from.",
-    "When I'm not coding, you'll usually find me out with friends or somewhere in the outdoors hiking.",
+    "I'm a computer engineer based in Gothenburg who enjoys building software that's both technically solid and genuinely pleasant to use. I care about the craft — clean architecture, thoughtful details, and code that holds up over time.",
+    "I'm open to opportunities across software development, whether that's frontend, backend, mobile, or full-stack. I've worked across a range of languages and stacks, and I'm always eager to pick up something new if the problem is interesting. What matters most to me is working on something meaningful with people I can learn from.",
+    "When I'm not coding, you'll usually find me out with friends or somewhere outdoors hiking.",
   ],
   resumeText: "Download my resume",
   resumeUrl: "/resume.pdf",
@@ -35,7 +35,7 @@ export const projectsContent: ProjectsContent = {
     {
       id: "1",
       title: "XADE",
-      description: "Thesis work focused on developing and implementing a new cross-platformframework for deepfake detection using vision-language models.",
+      description: "Thesis work focused on developing and implementing a cross-platform framework for deepfake detection using vision-language models.",
       tags: ["Python", "TypeScript", "Machine Learning"],
       link: "https://example.com",
       github: "https://github.com",
@@ -43,49 +43,48 @@ export const projectsContent: ProjectsContent = {
     {
       id: "2",
       title: "Friends of Claudia app",
-      description: "During my internship at Friends of Claudia, I acted as main developer for their mobile app, which was built with React Native along with Expo Go",
-      tags: ["React", "Expo GO"],
+      description: "Lead developer on a React Native mobile app during my internship at Friends of Claudia, built with Expo Go.",
+      tags: ["React Native", "Expo Go"],
       link: "https://example.com",
       github: "https://github.com",
     },
     {
       id: "3",
       title: "Portfolio Website",
-      description: "This portfolio website built with Next.js and Tailwind CSS, showcasing my projects and skills with a clean, modern design.",
+      description: "My personal portfolio built with Next.js and Tailwind CSS, featuring animated sections and a Supabase-powered project showcase.",
       tags: ["Next.js", "Tailwind CSS", "TypeScript"],
       link: "https://example.com",
     },
     {
       id: "4",
       title: "Battleship Game",
-      description: "Battleship game created in my course Android Development, featuring online gameplay with firebase.",
-      tags: ["Kotlin", "Firebase",],
+      description: "An online multiplayer battleship game built for my Android Development course, featuring real-time gameplay with Firebase.",
+      tags: ["Kotlin", "Firebase"],
       github: "https://github.com",
     },
     {
       id: "5",
       title: "SongSwipe",
-      description: "Songswipe is a music discovery app built with Spotify API in my iOS course it used ´dating app´ feature to swipe on songs you like and dislike.",
-      tags: ["Python", "Django", "AWS"],
+      description: "A music discovery app built with the Spotify API for my iOS course, using a swipe-based interface to find new songs.",
+      tags: ["Swift", "Spotify API", "iOS"],
       link: "https://example.com",
       github: "https://github.com",
     },
     {
       id: "6",
       title: "Weather App",
-      description: "Songswipe is a music discovery app built with Spotify API in my iOS course it used ´dating app´ feature to swipe on songs you like and dislike.",
+      description: "A clean weather app displaying real-time forecasts and conditions, built as a course project.",
       tags: ["Python", "Django", "AWS"],
       link: "https://example.com",
       github: "https://github.com",
     },
-
   ],
 };
 
 export const contactContent: ContactContent = {
   sectionLabel: "contact",
-  heading: "Send me a message!",
-  subtitle: "Got a question or proposal, or just want to say hello? Go ahead.",
+  heading: "Get in touch",
+  subtitle: "Have a question, a proposal, or just want to say hello? Go ahead.",
   nameLabel: "Your Name",
   namePlaceholder: "Enter your name",
   emailLabel: "Email Address",
@@ -98,5 +97,5 @@ export const contactContent: ContactContent = {
 export const footerContent: FooterContent = {
   heading: "SAY HELLO",
   email: "viktor.ahnstrom@gmail.com",
-  copyright: "© Viktor Ahnström 2025",
+  copyright: "© Viktor Ahnström 2025–2026",
 };

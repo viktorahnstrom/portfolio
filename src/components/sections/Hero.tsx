@@ -20,8 +20,8 @@ export default function Hero() {
         />
       </Link>
 
-      <div className="bg-neutral-gray grain flex-grow pt-32 sm:pt-36 md:pt-0">
-        <div className="mx-auto px-8 sm:px-14 md:px-20 lg:px-28 xl:px-36 max-w-8xl h-full">
+      <div className="bg-neutral-gray grain flex-grow pt-24 sm:pt-28 md:pt-0">
+        <div className="mx-auto px-6 sm:px-14 md:px-20 lg:px-28 xl:px-36 max-w-8xl h-full">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
             <div className="flex flex-col justify-center md:pt-32 w-full">
               <h1 className="text-[17vw] sm:text-[18vw] md:text-[19vw] lg:text-[19vw] xl:text-[19vw] 2xl:text-[19vw] leading-[0.95] tracking-tight stylized-name">
@@ -29,7 +29,7 @@ export default function Hero() {
                 <span className="name-line">{heroContent.lastName}</span>
               </h1>
 
-              <div className="-mt-1 sm:mt-0 md:-mt-2 max-w-xs">
+              <div className="mt-3 sm:mt-3 md:-mt-2 max-w-xs">
                 <h2 className="text-sm sm:text-base md:text-lg font-bold">
                   {heroContent.title}
                 </h2>
@@ -50,8 +50,8 @@ export default function Hero() {
       </div>
 
       {/* Profile picture - centered, larger */}
-      <div className="absolute bottom-12 sm:bottom-16 md:bottom-40 inset-x-0 flex justify-center z-10 pointer-events-none">
-        <div className="relative w-48 h-64 sm:w-56 sm:h-72 md:w-72 md:h-96">
+      <div className="absolute bottom-10 sm:bottom-14 md:bottom-40 inset-x-0 flex justify-center z-10 pointer-events-none">
+        <div className="relative w-44 h-60 sm:w-56 sm:h-72 md:w-72 md:h-96">
           <Image
             src="/profilepicture.svg"
             alt="Profile photo"
