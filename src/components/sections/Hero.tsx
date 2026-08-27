@@ -24,7 +24,7 @@ export default function Hero() {
         <div className="mx-auto px-6 sm:px-14 md:px-20 lg:px-28 xl:px-36 max-w-8xl h-full">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
             <div className="flex flex-col justify-center md:pt-32 w-full">
-              <h1 className="text-[17vw] sm:text-[18vw] md:text-[19vw] xl:text-[19vw] 2xl:text-[17.5vw] leading-[0.95] tracking-tight stylized-name">
+              <h1 className="text-[17vw] sm:text-[18vw] md:text-[min(19vw,350px)] leading-[0.95] tracking-tight stylized-name">
                 <span className="name-line">{heroContent.firstName}</span>
                 <span className="name-line">{heroContent.lastName}</span>
               </h1>
