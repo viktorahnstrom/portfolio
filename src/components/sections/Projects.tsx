@@ -50,7 +50,7 @@ function useImageOrientation(src: string | null) {
 
 function ShowcaseItem({ project, index, total }: { project: Project; index: number; total: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "0px 0px -250px 0px" });
   const prefersReduced = useReducedMotion();
   const heroImage = getHeroImage(project);
   const previewImages = getPreviewImages(project);
@@ -254,7 +254,7 @@ function ShowcaseItem({ project, index, total }: { project: Project; index: numb
 
 function ArchiveList({ projects }: { projects: Project[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "0px 0px -250px 0px" });
   const prefersReduced = useReducedMotion();
 
   if (projects.length === 0) return null;
@@ -341,7 +341,7 @@ export default function Projects() {
   const [loading, setLoading] = useState(true);
 
   const sectionRef = useRef<HTMLElement>(null);
-  const headingInView = useInView(sectionRef, { once: true, margin: "-40px" });
+  const headingInView = useInView(sectionRef, { once: true, margin: "0px 0px -250px 0px" });
 
   useEffect(() => {
     async function fetchProjects() {

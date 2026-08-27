@@ -24,20 +24,20 @@ export default function Hero() {
         <div className="mx-auto px-6 sm:px-14 md:px-20 lg:px-28 xl:px-36 max-w-8xl h-full">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
             <div className="flex flex-col justify-center md:pt-32 w-full">
-              <h1 className="text-[17vw] sm:text-[18vw] md:text-[19vw] lg:text-[19vw] xl:text-[19vw] 2xl:text-[19vw] leading-[0.95] tracking-tight stylized-name">
+              <h1 className="text-[17vw] sm:text-[18vw] md:text-[19vw] xl:text-[19vw] 2xl:text-[17.5vw] leading-[0.95] tracking-tight stylized-name">
                 <span className="name-line">{heroContent.firstName}</span>
                 <span className="name-line">{heroContent.lastName}</span>
               </h1>
 
               <div className="mt-3 sm:mt-3 md:-mt-2 max-w-xs">
-                <h2 className="text-sm sm:text-base md:text-lg font-bold">
+                <h2 className="text-sm sm:text-base md:text-base font-bold">
                   {heroContent.title}
                 </h2>
                 <ul className="mt-1 space-y-0.5">
                   {heroContent.details.map((detail, index) => (
                     <li
                       key={index}
-                      className="text-sm md:text-base font-medium"
+                      className="text-xs md:text-sm font-medium"
                     >
                       &rarr; {detail}
                     </li>
@@ -49,11 +49,11 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Profile picture - centered, larger */}
-      <div className="absolute bottom-10 sm:bottom-14 md:bottom-40 inset-x-0 flex justify-center z-10 pointer-events-none">
+      {/* Profile picture - centered, bottom aligned to gray/white boundary */}
+      <div className="absolute bottom-12 sm:bottom-16 md:bottom-40 inset-x-0 flex justify-center z-10 pointer-events-none animate-fade-in animation-delay-500">
         <div className="relative w-44 h-60 sm:w-56 sm:h-72 md:w-72 md:h-96">
           <Image
-            src="/profilepicture.svg"
+            src="/profilepicture2.png"
             alt="Profile photo"
             fill
             className="object-cover object-top"
